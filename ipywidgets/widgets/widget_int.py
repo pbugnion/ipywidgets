@@ -38,13 +38,7 @@ step: integer
 
 def _int_doc(cls):
     """Add int docstring template to class init."""
-    def __init__(self, value=None, **kwargs):
-        if value is not None:
-            kwargs['value'] = value
-        super(cls, self).__init__(**kwargs)
-
-    __init__.__doc__ = _int_doc_t
-    cls.__init__ = __init__
+    cls.__doc__ = _int_doc_t
     return cls
 
 def _bounded_int_doc(cls):
