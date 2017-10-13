@@ -62,3 +62,21 @@ class TestBoundedIntText(TestCase):
         assert state['min'] == -5
         assert state['max'] == 81
         assert state['step'] == 3
+
+    def test_value_bounded_at_min(self):
+        textbox = BoundedIntText(
+            value=52,
+            min=10,
+            max=80
+        )
+        textbox.value = -21
+        assert textbox.value == 10
+
+    def test_value_bounded_at_max(self):
+        textbox = BoundedIntText(
+            value=52,
+            min=10,
+            max=80
+        )
+        textbox.value = 421
+        assert textbox.value == 80
