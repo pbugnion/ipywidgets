@@ -30,41 +30,44 @@ class TestIntText(TestCase):
         assert textbox.get_state()['value'] == 72
 
 
-class TestBoundedIntText(TestCase):
+class BoundedIntBase(object):
+    """ Mixin for tests common to all bounded int widgets """
+
+    def create_widget(self, *args, **kwargs):
+        return NotImplemented
 
     def test_construction_default_value(self):
-        textbox = BoundedIntText()
-        state = textbox.get_state()
+        widget = self.create_widget()
+        state = widget.get_state()
         assert state['value'] == 0
         assert state['disabled'] is False
-        assert state['continuous_update'] is False
         assert state['min'] == 0
         assert state['max'] == 100
         assert state['step'] == 1
 
     def test_construction_explicit_arguments(self):
-        textbox = BoundedIntText(52, -5, 81, 3)
-        state = textbox.get_state()
+        widget = self.create_widget(52, -5, 81, 3)
+        state = widget.get_state()
         assert state['value'] == 52
         assert state['min'] == -5
         assert state['max'] == 81
         assert state['step'] == 3
 
     def test_construction_with_kwargs(self):
-        textbox = BoundedIntText(
+        widget = self.create_widget(
             value=52,
             min=-5,
             max=81,
             step=3
         )
-        state = textbox.get_state()
+        state = widget.get_state()
         assert state['value'] == 52
         assert state['min'] == -5
         assert state['max'] == 81
         assert state['step'] == 3
 
     def test_value_bounded_at_min(self):
-        textbox = BoundedIntText(
+        textbox = self.create_widget(
             value=52,
             min=10,
             max=80
@@ -73,10 +76,16 @@ class TestBoundedIntText(TestCase):
         assert textbox.value == 10
 
     def test_value_bounded_at_max(self):
-        textbox = BoundedIntText(
+        textbox = self.create_widget(
             value=52,
             min=10,
             max=80
         )
         textbox.value = 421
         assert textbox.value == 80
+
+
+class TestBoundedIntText(BoundedIntBase, TestCase):
+
+    def create_widget(self, *args, **kwargs):
+        return BoundedIntText(*args, **kwargs)
