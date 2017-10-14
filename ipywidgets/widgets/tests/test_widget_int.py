@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from ipywidgets import IntText, BoundedIntText, IntSlider
+from ipywidgets import IntText, BoundedIntText, IntSlider, IntProgress
 
 
 class TestIntText(TestCase):
@@ -40,10 +40,8 @@ class BoundedIntBase(object):
         widget = self.create_widget()
         state = widget.get_state()
         assert state['value'] == 0
-        assert state['disabled'] is False
         assert state['min'] == 0
         assert state['max'] == 100
-        assert state['step'] == 1
 
     def test_construction_explicit_arguments(self):
         widget = self.create_widget(52, -5, 81, 3)
@@ -51,20 +49,17 @@ class BoundedIntBase(object):
         assert state['value'] == 52
         assert state['min'] == -5
         assert state['max'] == 81
-        assert state['step'] == 3
 
     def test_construction_with_kwargs(self):
         widget = self.create_widget(
             value=52,
             min=-5,
-            max=81,
-            step=3
+            max=81
         )
         state = widget.get_state()
         assert state['value'] == 52
         assert state['min'] == -5
         assert state['max'] == 81
-        assert state['step'] == 3
 
     def test_value_bounded_at_min(self):
         textbox = self.create_widget(
@@ -95,3 +90,9 @@ class TestIntSlider(BoundedIntBase, TestCase):
 
     def create_widget(self, *args, **kwargs):
         return IntSlider(*args, **kwargs)
+
+
+class TestIntProgress(BoundedIntBase, TestCase):
+
+    def create_widget(self, *args, **kwargs):
+        return IntProgress(*args, **kwargs)
