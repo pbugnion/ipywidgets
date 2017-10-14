@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from ipywidgets import IntText, BoundedIntText
+from ipywidgets import IntText, BoundedIntText, IntSlider
 
 
 class TestIntText(TestCase):
@@ -89,3 +89,9 @@ class TestBoundedIntText(BoundedIntBase, TestCase):
 
     def create_widget(self, *args, **kwargs):
         return BoundedIntText(*args, **kwargs)
+
+
+class TestIntSlider(BoundedIntBase, TestCase):
+
+    def create_widget(self, *args, **kwargs):
+        return IntSlider(*args, **kwargs)
